@@ -122,6 +122,13 @@ Windows bootstrap helper:
 .\scripts\bootstrap-windows.ps1 -InstallMissing
 ```
 
+If PowerShell blocks `.ps1` execution, allow it for the current session only:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\scripts\bootstrap-windows.ps1 -InstallMissing
+```
+
 Windows one-step release build:
 
 ```powershell

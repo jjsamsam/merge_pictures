@@ -8,6 +8,15 @@ Open PowerShell in the project folder and run:
 .\scripts\bootstrap-windows.ps1 -InstallMissing
 ```
 
+If you see a message like `running scripts is disabled on this system`, allow scripts for the current PowerShell window only, then run the script again:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\scripts\bootstrap-windows.ps1 -InstallMissing
+```
+
+This is the recommended option because it only affects the current PowerShell session.
+
 What this script does:
 - checks whether `node`, `npm`, and `cargo` are available
 - installs missing `Node.js LTS` and `Rust` with `winget` if needed
@@ -18,6 +27,12 @@ If you prefer not to auto-install anything, run:
 
 ```powershell
 .\scripts\bootstrap-windows.ps1
+```
+
+If you want a longer-lasting setting for your own account, you can use:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
 ## One-step release build
