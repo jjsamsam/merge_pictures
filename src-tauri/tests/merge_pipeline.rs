@@ -1,5 +1,5 @@
 use image::{ImageBuffer, Rgba};
-use lopdf::Document;
+use lopdf::{Dictionary, Document, Object, ObjectId};
 use merge_picture_lib::domain::{
     ImageFitMode, MergeRequest, PageSizePreset, PreviewItem, SupportedKind,
 };
@@ -38,6 +38,7 @@ fn merges_image_and_pdf_into_single_document() {
 
     let merged = Document::load(&output_path).expect("merged output should load");
     assert_eq!(merged.get_pages().len(), 2);
+    assert!(page_contains_image_xobject(&merged, 1));
 }
 
 #[test]
@@ -105,4 +106,48 @@ fn write_blank_pdf(path: &Path) {
     )]);
     let bytes = document.save(&PdfSaveOptions::default(), &mut Vec::new());
     fs::write(path, bytes).expect("pdf should be written");
+}
+
+fn page_contains_image_xobject(document: &Document, page_number: u32) -> bool {
+    let pages = document.get_pages();
+    let page_id = *pages.get(&page_number).expect("page should exist");
+    let page_dict = get_dict(document, page_id);
+    let resources = get_dict_from_object(document, page_dict.get(b"Resources").expect("resources"));
+
+    let Ok(xobject_obj) = resources.get(b"XObject") else {
+        return false;
+    };
+
+    let xobject_dict = get_dict_from_object(document, xobject_obj);
+
+    xobject_dict.iter().any(|(_, object)| {
+        let Object::Reference(object_id) = object else {
+            return false;
+        };
+
+        let Ok(stream) = document.get_object(*object_id).and_then(Object::as_stream) else {
+            return false;
+        };
+
+        matches!(
+            stream.dict.get(b"Subtype"),
+            Ok(Object::Name(name)) if name == b"Image"
+        )
+    })
+}
+
+fn get_dict<'a>(document: &'a Document, object_id: ObjectId) -> &'a Dictionary {
+    document
+        .get_object(object_id)
+        .expect("object should exist")
+        .as_dict()
+        .expect("object should be a dictionary")
+}
+
+fn get_dict_from_object<'a>(document: &'a Document, object: &'a Object) -> &'a Dictionary {
+    match object {
+        Object::Dictionary(dictionary) => dictionary,
+        Object::Reference(object_id) => get_dict(document, *object_id),
+        _ => panic!("object should resolve to a dictionary"),
+    }
 }

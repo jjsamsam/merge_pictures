@@ -340,12 +340,12 @@ fn merge_pdf_documents(paths: &[PathBuf]) -> Result<Document, AppError> {
         objects.extend(document.objects.clone());
     }
 
-    let pages_id = merged.new_object_id();
-    let catalog_id = merged.new_object_id();
-
     for (object_id, object) in objects {
         merged.objects.insert(object_id, object);
     }
+
+    let pages_id = (max_id, 0);
+    let catalog_id = (max_id + 1, 0);
 
     let kids = page_ids
         .iter()
@@ -381,7 +381,7 @@ fn merge_pdf_documents(paths: &[PathBuf]) -> Result<Document, AppError> {
         .objects
         .insert(catalog_id, Object::Dictionary(catalog_dict));
     merged.trailer.set("Root", catalog_id);
-    merged.max_id = merged.objects.len() as u32;
+    merged.max_id = catalog_id.0;
     merged.compress();
 
     Ok(merged)
