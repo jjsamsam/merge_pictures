@@ -19,7 +19,10 @@ This is the recommended option because it only affects the current PowerShell se
 
 What this script does:
 - checks whether `node`, `npm`, and `cargo` are available
+- checks whether `Visual Studio Build Tools 2022` with `Desktop development with C++` is available
 - installs missing `Node.js LTS` and `Rust` with `winget` if needed
+- installs missing `Visual Studio Build Tools 2022` with the required C++ workload when `-InstallMissing` is used
+- tries to load the Visual Studio build environment into the current PowerShell session
 - runs `npm install`
 - prints the build command for Windows
 
@@ -82,10 +85,32 @@ npm -v
 ## If Tauri build fails on Windows
 
 Most common missing dependency:
-- Visual Studio Build Tools
+- Visual Studio Build Tools 2022 with Desktop development with C++
 
 Recommended workload:
 - Desktop development with C++
 
 You may also need:
 - WebView2 runtime support on the target machine
+
+## If you see `link.exe not found`
+
+That means the Microsoft C++ linker is not available in the current shell.
+
+Recommended fix:
+1. Run the bootstrap script with installation enabled:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\scripts\bootstrap-windows.ps1 -InstallMissing
+```
+
+2. If it still fails, open one of these shells and run the build there:
+- `Developer PowerShell for Visual Studio`
+- `x64 Native Tools Command Prompt for VS`
+
+3. Confirm the linker is visible:
+
+```powershell
+where.exe link
+```

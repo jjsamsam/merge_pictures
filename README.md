@@ -122,6 +122,8 @@ Windows bootstrap helper:
 .\scripts\bootstrap-windows.ps1 -InstallMissing
 ```
 
+This helper checks `Node.js`, `Rust`, and `Visual Studio Build Tools 2022`, installs missing prerequisites when allowed, and tries to load the MSVC build environment into the current shell.
+
 If PowerShell blocks `.ps1` execution, allow it for the current session only:
 
 ```powershell
