@@ -5,4 +5,5 @@ target/
 src-tauri/target/
 coverage/
 *.log
-
+artifacts/
+src-tauri/gen/schemas/windows-schema.json
