@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Merge Picture",
+  "version": "0.1.0",
+  "identifier": "com.jonghochoi.mergepicture",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Merge Picture",
+        "width": 1440,
+        "height": 920,
+        "minWidth": 1080,
+        "minHeight": 760,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/icon.png",
+      "icons/generated/app.ico",
+      "icons/generated/app.icns"
+    ],
+    "category": "Productivity",
+    "shortDescription": "Merge photos and PDFs into a single PDF",
+    "longDescription": "A modern semi-dark desktop app that merges image files and PDFs into one PDF document.",
+    "copyright": "Copyright (c) 2026 jonghochoi",
+    "publisher": "jonghochoi",
+    "macOS": {
+      "minimumSystemVersion": "11.0"
+    },
+    "windows": {
+      "digestAlgorithm": "sha256"
+    }
+  }
+}

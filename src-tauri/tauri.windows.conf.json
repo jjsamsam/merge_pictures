@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "bundle": {
+    "targets": ["nsis", "msi"],
+    "windows": {
+      "digestAlgorithm": "sha256",
+      "allowDowngrades": false,
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "wix": {
+        "language": "en-US",
+        "upgradeCode": "91ff4527-1272-549a-9f95-d4f1dc3edff1"
+      },
+      "nsis": {
+        "installerIcon": "icons/generated/app.ico",
+        "installMode": "currentUser",
+        "displayLanguageSelector": false,
+        "compression": "lzma",
+        "startMenuFolder": "Merge Picture",
+        "minimumWebview2Version": "120.0.0.0"
+      }
+    }
+  }
+}
