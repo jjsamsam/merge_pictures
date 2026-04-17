@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Desktop PDF merger for images and PDFs"
 authors = ["jonghochoi"]
 edition = "2024"
+default-run = "merge-picture"
 
 [lib]
 name = "merge_picture_lib"
