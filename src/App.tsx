@@ -38,7 +38,7 @@ export default function App() {
   const [isPicking, setIsPicking] = useState(false);
   const [isMerging, setIsMerging] = useState(false);
   const [isDropActive, setIsDropActive] = useState(false);
-  const [imagePageSize, setImagePageSize] = useState<PageSizePreset>("auto");
+  const [imagePageSize, setImagePageSize] = useState<PageSizePreset>("a4");
   const [imageMarginMm, setImageMarginMm] = useState(12);
   const [imageFitMode, setImageFitMode] = useState<ImageFitMode>("contain");
   const [notice, setNotice] = useState<string>("Choose files to build your merged PDF.");
