@@ -116,6 +116,21 @@ npm install
 npm run tauri:build -- --config src-tauri/tauri.windows.conf.json
 ```
 
+Windows bootstrap helper:
+
+```powershell
+.\scripts\bootstrap-windows.ps1 -InstallMissing
+```
+
+Windows one-step release build:
+
+```powershell
+.\scripts\release-windows.ps1 -InstallMissing
+```
+
+See also:
+- `BUILD_WINDOWS.md`
+
 Notes:
 - `src-tauri/icons/` contains the generated app icon assets used for bundling.
 - `src-tauri/icons/generated/app.icns` and `app.ico` are wired into the Tauri bundle config.
