@@ -110,32 +110,27 @@ npm run tauri:build
 
 ### Build on Windows
 
-```bash
-cd <project-folder>
-npm install
-npm run tauri:build -- --config src-tauri/tauri.windows.conf.json
-```
+To build on Windows, first pull the latest code and run the one-step release script in PowerShell.
 
-Windows bootstrap helper:
+1. **Pull the latest changes:**
+   ```powershell
+   git pull origin main
+   ```
 
-```powershell
-.\scripts\bootstrap-windows.ps1 -InstallMissing
-```
+2. **Run the one-step release build:**
+   If PowerShell blocks script execution, bypass it for the current session and run:
+   ```powershell
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\scripts\release-windows.ps1 -InstallMissing
+   ```
+   This script automatically checks and installs any missing build environments (Node.js, Rust, Visual Studio Build Tools 2022) and runs the Tauri build.
 
-This helper checks `Node.js`, `Rust`, and `Visual Studio Build Tools 2022`, installs missing prerequisites when allowed, and tries to load the MSVC build environment into the current shell.
-
-If PowerShell blocks `.ps1` execution, allow it for the current session only:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\scripts\bootstrap-windows.ps1 -InstallMissing
-```
-
-Windows one-step release build:
-
-```powershell
-.\scripts\release-windows.ps1 -InstallMissing
-```
+3. **Manual Build:**
+   If your build tools are already installed:
+   ```powershell
+   npm install
+   npm run tauri:build -- --config src-tauri/tauri.windows.conf.json
+   ```
 
 See also:
 - `BUILD_WINDOWS.md`
