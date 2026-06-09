@@ -6,6 +6,7 @@ use crate::errors::AppError;
 use lopdf::{Document, Object, ObjectId, dictionary};
 use printpdf::{
     Mm, Op, PdfDocument, PdfPage, PdfSaveOptions, Pt, Px, XObjectTransform, image::RawImage,
+    ImageOptimizationOptions,
 };
 use std::collections::BTreeMap;
 use std::fs;
@@ -244,7 +245,17 @@ fn image_to_pdf(
     );
 
     document.with_pages(vec![page]);
-    let pdf_bytes = document.save(&PdfSaveOptions::default(), &mut warnings);
+    let pdf_bytes = document.save(
+        &PdfSaveOptions {
+            image_optimization: Some(ImageOptimizationOptions {
+                max_image_size: None,
+                quality: Some(0.95),
+                ..ImageOptimizationOptions::default()
+            }),
+            ..PdfSaveOptions::default()
+        },
+        &mut warnings,
+    );
     let output_path = temp_dir.join(format!("image-input-{index}.pdf"));
     fs::write(&output_path, pdf_bytes).map_err(|error| AppError::Write(error.to_string()))?;
     Ok(output_path)
